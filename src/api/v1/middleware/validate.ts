@@ -16,6 +16,14 @@ interface ValidationOptions {
     stripParams?: boolean;
 }
 
+/**
+ * Creates an Express middleware function that validates different parts of the request
+ * against separate Joi schemas and strips unknown fields appropriately.
+ *
+ * @param schemas - Object containing separate schemas for body, params, and query
+ * @param options - Validation options for stripping behavior
+ * @returns Express middleware function that performs the validation
+ */
 export const validateRequest = (
     schemas: RequestSchemas,
     options: ValidationOptions = {}
@@ -32,7 +40,16 @@ export const validateRequest = (
         try {
             const errors: string[] = [];
 
-
+            /**
+             * Validates a specific part of the request (body, params, or query) against a Joi schema.
+             * Collects validation errors and optionally strips unknown fields from the data.
+             *
+             * @param schema - Joi schema to validate against
+             * @param data - The request data to validate (req.body, req.params, or req.query)
+             * @param partName - Name of the request part for error prefixing (e.g., "Body", "Params", "Query")
+             * @param shouldStrip - Whether to strip unknown fields from the validated data
+             * @returns The original data if validation fails or stripping is disabled, otherwise the stripped/validated data
+             */
             const validatePart = (
                 schema: ObjectSchema,
                 data: any,
@@ -99,3 +116,5 @@ export const validateRequest = (
         }
     };
 };
+
+
