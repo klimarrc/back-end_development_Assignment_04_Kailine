@@ -1,2 +1,7 @@
 node_modules/
 dist/
+*.log
+
+# Firebase service account
+*firebase-adminsdk*.json
+firebase-key.json
