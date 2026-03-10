@@ -6,5 +6,4 @@ logs/
 *.log
 
 # Firebase service account
-*firebase-adminsdk*.json
-firebase-key.json
+authentication-m4-firebase-adminsdk-fbsvc-ae729b0456.json
