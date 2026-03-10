@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import * as postService from "../services/postService";
-import { successResponse } from "../models/responseModel";
+import { successResponse } from "../models/responseModels";
 import { HTTP_STATUS } from "../../../constants/httpConstants";
 
 // Handles creating new Post
@@ -10,8 +10,8 @@ export const createPostHandler = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        const { userId, content } = req.body;
-        const postData = { userId, content };
+        const { } = req.body;
+        const postData = {};
 
         const newPost = await postService.createPost(postData);
 

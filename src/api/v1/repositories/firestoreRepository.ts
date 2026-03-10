@@ -49,7 +49,7 @@ export const createDocument = async <T>(
     }
 };
 
-export const getDocuments = async (
+export const getAllDocuments = async (
     collectionName: string
 ): Promise<FirebaseFirestore.QuerySnapshot> => {
     try {

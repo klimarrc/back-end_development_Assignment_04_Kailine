@@ -16,13 +16,13 @@ export const setCustomClaims = async (
     const { uid, role } = req.body;
 
     try {
-        // Set custom claims on the user's Firebase account
-        await auth.setCustomUserClaims(uid, { role });
+        // Set custom claims on the officer Firebase account
+        await auth.setCustomOfficerClaims(uid, { role });
 
         res.status(HTTP_STATUS.OK).json(
             successResponse(
                 {},
-                `Custom claims set for user: ${uid}. User must obtain a new token for changes to take effect.`
+                `Custom claims set for officer : ${uid}. User must obtain a new token for changes to take effect.`
             )
         );
     } catch (error) {

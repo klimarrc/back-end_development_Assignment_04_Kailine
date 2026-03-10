@@ -1,11 +1,11 @@
-export type EventStatus = "pending" | "under_review" | "flagged";
+export type PostStatus = "pending" | "under_review" | "flagged";
 
 
-export interface events {
+export interface Post {
     id: string;
     applicant: string;
     amount: number;
-    status: EventStatus;
+    status: PostStatus;
     createdAt: Date;
 }
 
