@@ -12,8 +12,8 @@ export const successResponse = <T>(
     message?: string
 ): ApiResponse<T> => ({
     status: "success",
-    data,
     message,
+    data,
 });
 
 export const errorResponse = (message: string, code: string) => ({
