@@ -1,7 +1,7 @@
 import { db } from "../../../config/firebaseConfig";
 
-export async function getNextProjectId(): Promise<string> {
-    const counterDocRef = db.collection("counters").doc("project");
+export async function getNextLoanId(): Promise<string> {
+    const counterDocRef = db.collection("counters").doc("loan");
 
     const nextId = await db.runTransaction(async (transaction) => {
         const snapshot = await transaction.get(counterDocRef);

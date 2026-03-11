@@ -2,6 +2,7 @@
 import { PostStatus, Post } from "../models/loanPostModel";
 import * as firestoreRepository from "../repositories/firestoreRepository";
 import * as counterRepository from "../repositories/counterRepository";
+import { loanPostModels } from "../models/loanPostModel";
 
 
 const COLLECTION = "posts";
@@ -15,16 +16,23 @@ export const createPost = async (postdata:
     }): Promise<Post> => {
 
     try {
-        const id: string = await counterRepository.getNextLoanId();
+        const id = await counterRepository.getNextLoanId();
+        const numericId = typeof id === "number" ? id : Number(id);
+
+        if (Number.isNaN(numericId)) {
+            throw new Error("Invalid loan id generated");
+        }
 
         const newPostData = {
+
             createdAt: new Date(),
             ...postdata,
             id,
+
         }
 
 
-        await firestoreRepository.createDocument<Post>(COLLECTION, newPostData);
+        await firestoreRepository.createDocument(COLLECTION, newPostData);
 
         return { ...newPostData } as Post;
 

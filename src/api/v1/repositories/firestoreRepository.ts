@@ -2,7 +2,6 @@
 import { db } from "../../../config/firebaseConfig";
 import { FirestoreDataTypes } from "../types/firestore";
 
-
 interface FieldValuePair {
     fieldName: string;
     fieldValue: FirestoreDataTypes;
@@ -11,14 +10,14 @@ interface FieldValuePair {
 // creating new document in firestore
 export const createDocument = async <T>(
     collectionName: string,
-    data: Partial<T> & { id: number }
+    data: Partial<T>
 ): Promise<string> => {
     try {
-        await db.collection(collectionName).doc(data.id.toString()).set(data);
+        let docRef: FirebaseFirestore.DocumentReference;
 
+        docRef = await db.collection(collectionName).add(data);
 
-        return data.id.toString();
-
+        return docRef.id;
     } catch (error: unknown) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
@@ -27,6 +26,7 @@ export const createDocument = async <T>(
         );
     }
 };
+
 // export const getAllDocuments = async (
 //     collectionName: string
 // ): Promise<FirebaseFirestore.QuerySnapshot> => {
