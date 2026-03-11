@@ -15,11 +15,11 @@ export const createPost = async (postdata:
     }): Promise<Post> => {
 
     try {
-        const id: string = await counterRepository.getNextProjectId();
+        const id: string = await counterRepository.getNextLoanId();
 
         const newPostData = {
-            ...postdata,
             createdAt: new Date(),
+            ...postdata,
             id,
         }
 

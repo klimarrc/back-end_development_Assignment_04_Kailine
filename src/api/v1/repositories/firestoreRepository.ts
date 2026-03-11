@@ -1,42 +1,24 @@
+
 import { db } from "../../../config/firebaseConfig";
 import { FirestoreDataTypes } from "../types/firestore";
-import { PostStatus, Post } from "../models/loanPostModel";
-import * as counterRepository from "../repositories/counterRepository";
+
 
 interface FieldValuePair {
     fieldName: string;
     fieldValue: FirestoreDataTypes;
 }
 
-export const runTransaction = async <T>(
-    operations: (transaction: FirebaseFirestore.Transaction) => Promise<T>
-): Promise<T> => {
-    try {
-        return await db.runTransaction(operations);
-    } catch (error: unknown) {
-        const errorMessage =
-            error instanceof Error ? error.message : "Unknown error";
-        throw new Error(`Transaction failed: ${errorMessage}`);
-    }
-};
-
-
+// creating new document in firestore
 export const createDocument = async <T>(
     collectionName: string,
-    data: Partial<T>,
-    id?: string
+    data: Partial<T> & { id: number }
 ): Promise<string> => {
     try {
-        let docRef: FirebaseFirestore.DocumentReference;
+        await db.collection(collectionName).doc(data.id.toString()).set(data);
 
-        if (id) {
-            docRef = db.collection(collectionName).doc(id);
-            await docRef.set(data);
-        } else {
-            docRef = await db.collection(collectionName).add(data);
-        }
 
-        return docRef.id;
+        return data.id.toString();
+
     } catch (error: unknown) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
@@ -45,7 +27,6 @@ export const createDocument = async <T>(
         );
     }
 };
-
 // export const getAllDocuments = async (
 //     collectionName: string
 // ): Promise<FirebaseFirestore.QuerySnapshot> => {

@@ -5,5 +5,3 @@ dist/
 logs/
 *.log
 
-# Firebase service account
-authentication-m4-firebase-adminsdk-fbsvc-ae729b0456.json
