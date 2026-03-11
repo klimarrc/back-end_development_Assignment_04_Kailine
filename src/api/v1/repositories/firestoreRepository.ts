@@ -7,15 +7,33 @@ interface FieldValuePair {
     fieldValue: FirestoreDataTypes;
 }
 
-// creating new document in firestore
+export const runTransaction = async <T>(
+    operations: (transaction: FirebaseFirestore.Transaction) => Promise<T>
+): Promise<T> => {
+    try {
+        return await db.runTransaction(operations);
+    } catch (error: unknown) {
+        const errorMessage =
+            error instanceof Error ? error.message : "Unknown error";
+        throw new Error(`Transaction failed: ${errorMessage}`);
+    }
+};
+
+// Create a new document in a specified Firestore collection with optional custom ID
 export const createDocument = async <T>(
     collectionName: string,
-    data: Partial<T>
+    data: Partial<T>,
+    id?: string
 ): Promise<string> => {
     try {
         let docRef: FirebaseFirestore.DocumentReference;
 
-        docRef = await db.collection(collectionName).add(data);
+        if (id) {
+            docRef = db.collection(collectionName).doc(id);
+            await docRef.set(data);
+        } else {
+            docRef = await db.collection(collectionName).add(data);
+        }
 
         return docRef.id;
     } catch (error: unknown) {

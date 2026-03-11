@@ -2,7 +2,6 @@
 import { PostStatus, Post } from "../models/loanPostModel";
 import * as firestoreRepository from "../repositories/firestoreRepository";
 import * as counterRepository from "../repositories/counterRepository";
-import { loanPostModels } from "../models/loanPostModel";
 
 
 const COLLECTION = "posts";
