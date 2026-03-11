@@ -10,8 +10,8 @@ export const createPostHandler = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        const { } = req.body;
-        const postData = {};
+        const { applicant, amount, status } = req.body;
+        const postData = { applicant, amount, status };
 
         const newPost = await postService.createPost(postData);
 
@@ -21,71 +21,71 @@ export const createPostHandler = async (
     }
 };
 
-// handles request to get all posts
-export const getAllPostsHandler = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-): Promise<void> => {
-    try {
-        const posts = await postService.getAllPosts();
+// // handles request to get all posts
+// export const getAllPostsHandler = async (
+//     req: Request,
+//     res: Response,
+//     next: NextFunction
+// ): Promise<void> => {
+//     try {
+//         const posts = await postService.getAllPosts();
 
-        res.status(HTTP_STATUS.OK).json(successResponse({ posts }, "Posts retrieved successfully"));
-    } catch (error: unknown) {
-        next(error);
-    }
-};
+//         res.status(HTTP_STATUS.OK).json(successResponse({ posts }, "Posts retrieved successfully"));
+//     } catch (error: unknown) {
+//         next(error);
+//     }
+// };
 
-// handles request to get a single post by Id
-export const getPostByIdHandler = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-): Promise<void> => {
-    try {
-        const { id } = req.params;
-        const post = await postService.getPostById(id as string);
+// // handles request to get a single post by Id
+// export const getPostByIdHandler = async (
+//     req: Request,
+//     res: Response,
+//     next: NextFunction
+// ): Promise<void> => {
+//     try {
+//         const { id } = req.params;
+//         const post = await postService.getPostById(id as string);
 
-        res.status(HTTP_STATUS.OK).json(successResponse({ post }, "Post retrieved successfully"));
-    } catch (error: unknown) {
-        next(error);
-    }
-};
+//         res.status(HTTP_STATUS.OK).json(successResponse({ post }, "Post retrieved successfully"));
+//     } catch (error: unknown) {
+//         next(error);
+//     }
+// };
 
-// handles request to update an exsting post
-export const updatePostHandler = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-): Promise<void> => {
-    try {
-        const { id } = req.params;
-        const { userId, content } = req.body;
+// // handles request to update an exsting post
+// export const updatePostHandler = async (
+//     req: Request,
+//     res: Response,
+//     next: NextFunction
+// ): Promise<void> => {
+//     try {
+//         const { id } = req.params;
+//         const { userId, content } = req.body;
 
-        const updatePostData = { userId, content };
+//         const updatePostData = { userId, content };
 
-        const updatedPost = await postService.updatePost(id as string, updatePostData);
+//         const updatedPost = await postService.updatePost(id as string, updatePostData);
 
-        res.status(HTTP_STATUS.OK).json(successResponse({ updatedPost }, "Post updated"));
-    } catch (error: unknown) {
-        next(error);
-    }
-};
+//         res.status(HTTP_STATUS.OK).json(successResponse({ updatedPost }, "Post updated"));
+//     } catch (error: unknown) {
+//         next(error);
+//     }
+// };
 
 
-// handles request to delete an exsting post
-export const deletePostHandler = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-): Promise<void> => {
-    try {
-        const { id } = req.params;
-        await postService.deletePost(id as string);
+// // handles request to delete an exsting post
+// export const deletePostHandler = async (
+//     req: Request,
+//     res: Response,
+//     next: NextFunction
+// ): Promise<void> => {
+//     try {
+//         const { id } = req.params;
+//         await postService.deletePost(id as string);
 
-        res.status(HTTP_STATUS.OK).json(successResponse("Post deleted"));
-    } catch (error: unknown) {
-        next(error);
-    }
-};
+//         res.status(HTTP_STATUS.OK).json(successResponse("Post deleted"));
+//     } catch (error: unknown) {
+//         next(error);
+//     }
+// };
 

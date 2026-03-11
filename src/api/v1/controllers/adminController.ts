@@ -2,7 +2,7 @@
 import { Request, Response, NextFunction } from "express";
 
 // Internal module imports
-import { auth } from "../../../../config/firebaseConfig";
+import { auth } from "../../../config/firebaseConfig";
 import { successResponse } from "../models/responseModels";
 import { HTTP_STATUS } from "../../../constants/httpConstants";
 
@@ -17,7 +17,7 @@ export const setCustomClaims = async (
 
     try {
         // Set custom claims on the officer Firebase account
-        await auth.setCustomOfficerClaims(uid, { role });
+        await auth.setCustomUserClaims(uid, { role });
 
         res.status(HTTP_STATUS.OK).json(
             successResponse(
