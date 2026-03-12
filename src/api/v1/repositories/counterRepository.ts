@@ -1,4 +1,4 @@
-import { db } from "../../../config/firebaseConfig";
+import { db } from "../../../../config/firebaseConfig";
 
 export async function getNextLoanId(): Promise<string> {
     const counterDocRef = db.collection("counters").doc("loan");

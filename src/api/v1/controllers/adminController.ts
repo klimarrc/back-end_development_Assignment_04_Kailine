@@ -2,7 +2,7 @@
 import { Request, Response, NextFunction } from "express";
 
 // Internal module imports
-import { auth } from "../../../config/firebaseConfig";
+import { auth } from "../../../../config/firebaseConfig";
 import { successResponse } from "../models/responseModels";
 import { HTTP_STATUS } from "../../../constants/httpConstants";
 

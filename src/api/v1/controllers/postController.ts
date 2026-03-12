@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import * as postService from "../services/postService";
 import { successResponse } from "../models/responseModels";
-import { HTTP_STATUS } from "../../../constants/httpConstants";
+import { HTTP_STATUS } from "../../src/constants/httpConstants";
 
 // Handles creating new Post
 export const createPostHandler = async (
