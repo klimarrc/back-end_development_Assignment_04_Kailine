@@ -17,8 +17,7 @@ export const getUserDetails = async (
 
     try {
         // Fetch user record from Firebase Authentication
-        const userId = Array.isArray(id) ? id[0] : id;
-        const user: UserRecord = await auth.getUser(userId);
+        const user: UserRecord = await auth.getUser(id as string);
         res.status(HTTP_STATUS.OK).json(successResponse(user));
     } catch (error) {
         // Pass any errors to the centralized error handler
