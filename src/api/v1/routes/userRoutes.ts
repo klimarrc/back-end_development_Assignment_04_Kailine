@@ -7,7 +7,7 @@ const router: Router = express.Router();
 
 // Only admins can view detailed user information
 router.get(
-    "/:id",
+    "/posts/:id",
     authenticate,
     isAuthorized({ hasRole: [] }),
     getUserDetails

@@ -6,8 +6,8 @@ import {
 } from "./api/v1/middleware/logger";
 import errorHandler from "./api/v1/middleware/errorHandler";
 import postRoutes from "./api/v1/routes/postRoutes";
-import userRoutes from "./api/v1/routes/officerRoutes";
 import adminRoutes from "./api/v1/routes/adminRoutes";
+import officerRoutes from "./api/v1/routes/userRoutes";
 
 
 const app = express();
@@ -27,7 +27,7 @@ app.use(express.json());
 
 // API Routes
 app.use("/api/v1", postRoutes);
-app.use("/api/v1", userRoutes);
+app.use("/api/v1", officerRoutes);
 app.use("/api/v1/admin", adminRoutes);
 
 // Global error handling middleware (MUST be applied last)
