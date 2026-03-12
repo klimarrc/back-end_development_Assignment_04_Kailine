@@ -10,7 +10,7 @@ const router: express.Router = express.Router();
 router.post(
     "/posts",
     authenticate,
-    isAuthorized({ hasRole: ["admin", "manager"] }),
+    isAuthorized({ hasRole: [] }),
     createPostHandler
 );
 

@@ -9,7 +9,7 @@ const router: Router = express.Router();
 router.get(
     "/:id",
     authenticate,
-    isAuthorized({ hasRole: ["admin"] }),
+    isAuthorized({ hasRole: [] }),
     getUserDetails
 );
 
