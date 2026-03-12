@@ -5,9 +5,10 @@ import {
     consoleLogger,
 } from "./api/v1/middleware/logger";
 import errorHandler from "./api/v1/middleware/errorHandler";
-import postRoutes from "./api/v1/routes/postRoutes";
+import loanRoutes from "./api/v1/routes/loanRoutes";
 import adminRoutes from "./api/v1/routes/adminRoutes";
-import officerRoutes from "./api/v1/routes/userRoutes";
+import userRoutes from "./api/v1/routes/userRoutes";
+
 
 
 const app = express();
@@ -25,9 +26,10 @@ if (process.env.NODE_ENV === "production") {
 // Body parsing middleware
 app.use(express.json());
 
+
 // API Routes
-app.use("/api/v1", postRoutes);
-app.use("/api/v1", officerRoutes);
+app.use("/api/v1", loanRoutes);
+app.use("/api/v1", userRoutes);
 app.use("/api/v1/admin", adminRoutes);
 
 // Global error handling middleware (MUST be applied last)

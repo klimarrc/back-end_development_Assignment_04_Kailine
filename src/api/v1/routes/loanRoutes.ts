@@ -8,25 +8,25 @@ import isAuthorized from "../middleware/authorize";
 const router: express.Router = express.Router();
 
 router.post(
-    "/posts",
+    "/",
     authenticate,
     isAuthorized({ hasRole: [] }),
     createPostHandler
 );
 
-// router.get("/posts", authenticate, getPostsHandler);
+// router.get("/loans", authenticate, getLoansHandler);
 
-// router.get("/posts/:id", authenticate, getPostByIdHandler);
+// router.get("/loans/:id", authenticate, getLoanByIdHandler);
 
 // router.put(
-//     "/posts/:id",
+//     "/loans/:id",
 //     authenticate,
 //     isAuthorized({ hasRole: ["admin", "manager"], allowSameUser: true }),
 //     updatePostHandler
 // );
 
 // router.delete(
-//     "/posts/:id",
+//     "/loans/:id",
 //     authenticate,
 //     isAuthorized({ hasRole: ["admin", "manager"] }),
 //     deletePostHandler

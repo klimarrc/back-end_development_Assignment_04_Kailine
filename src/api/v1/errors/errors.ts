@@ -26,11 +26,11 @@ export class RepositoryError extends AppError {
     }
 }
 
-export class ServiceError extends AppError {
+export class NotFoundError extends AppError {
     constructor(
         message: string,
-        code: string = "SERVICE_ERROR",
-        statusCode: number = HTTP_STATUS.INTERNAL_SERVER_ERROR
+        code: string = "NOT_FOUND_ERROR",
+        statusCode: number = HTTP_STATUS.NOT_FOUND
     ) {
         super(message, code, statusCode);
     }

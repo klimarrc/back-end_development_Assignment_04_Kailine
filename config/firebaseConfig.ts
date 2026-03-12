@@ -1,4 +1,4 @@
-import { initializeApp, cert, ServiceAccount } from "firebase-admin/app";
+import { ServiceAccount } from "firebase-admin/app";
 import admin from "firebase-admin";
 import { getFirestore, Firestore } from "firebase-admin/firestore";
 import { getAuth, Auth } from "firebase-admin/auth";
@@ -15,4 +15,4 @@ const auth: Auth = getAuth();
 
 const db: Firestore = getFirestore();
 
-export { auth, db };
+export { db, auth };
