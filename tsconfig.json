@@ -17,6 +17,6 @@
         "baseUrl": "./",
         
     },
-    "include": ["src/api/src/**/*", "tests/**/*", "src/api"],
-    "exclude": ["node_modules", "dist"]
+    "include": ["src/**/*", "tests/**/*"], // Include all TypeScript files in the 'src' and 'tests' directories.
+    "exclude": ["node_modules", "dist"] // Exclude 'node_modules' and 'dist' directories.
 }

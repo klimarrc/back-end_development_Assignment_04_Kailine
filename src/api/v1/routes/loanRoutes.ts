@@ -2,17 +2,19 @@ import express from "express";
 import {
     createPostHandler,
 } from "../controllers/postController";
+
 import authenticate from "../middleware/authenticate";
-import isAuthorized from "../middleware/authorize";
+//import isAuthorized from "../middleware/authorize";
 
 const router: express.Router = express.Router();
 
 router.post(
     "/",
     authenticate,
-    isAuthorized({ hasRole: [] }),
+    // isAuthorized({ hasRole: [] }),
     createPostHandler
 );
+
 
 // router.get("/loans", authenticate, getLoansHandler);
 

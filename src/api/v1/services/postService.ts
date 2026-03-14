@@ -24,9 +24,9 @@ export const createPost = async (postdata:
 
         const newPostData = {
 
-            createdAt: new Date(),
-            ...postdata,
             id,
+            ...postdata,
+            createdAt: new Date(),
 
         }
 

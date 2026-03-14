@@ -28,8 +28,8 @@ export class RepositoryError extends AppError {
 
 export class NotFoundError extends AppError {
     constructor(
-        message: string,
-        code: string = "NOT_FOUND_ERROR",
+        message: string = "Resource not found",
+        code: string = "NOT_FOUND",
         statusCode: number = HTTP_STATUS.NOT_FOUND
     ) {
         super(message, code, statusCode);
@@ -38,7 +38,7 @@ export class NotFoundError extends AppError {
 
 export class AuthenticationError extends AppError {
     constructor(
-        message: string,
+        message: string = "Authentication failed",
         code: string = "AUTHENTICATION_ERROR",
         statusCode: number = HTTP_STATUS.UNAUTHORIZED
     ) {

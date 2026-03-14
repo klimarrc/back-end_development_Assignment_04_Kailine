@@ -8,6 +8,7 @@ import errorHandler from "./api/v1/middleware/errorHandler";
 import loanRoutes from "./api/v1/routes/loanRoutes";
 import adminRoutes from "./api/v1/routes/adminRoutes";
 import userRoutes from "./api/v1/routes/userRoutes";
+import authRoutes from "./api/v1/routes/authRoutes";
 
 
 
@@ -28,9 +29,10 @@ app.use(express.json());
 
 
 // API Routes
-app.use("/api/v1", loanRoutes);
-app.use("/api/v1", userRoutes);
+app.use("/api/v1/loans", loanRoutes);
+app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/admin", adminRoutes);
+app.use("/api/v1/auth", authRoutes);
 
 // Global error handling middleware (MUST be applied last)
 app.use(errorHandler);

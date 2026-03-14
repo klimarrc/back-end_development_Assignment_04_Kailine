@@ -1,7 +1,7 @@
 import morgan, { StreamOptions } from "morgan";
 import fs from "fs";
 import path from "path";
-import { HTTP_STATUS } from "src/constants/httpConstants";
+import { HTTP_STATUS } from "../../../constants/httpConstants";
 
 // Ensure logs directory exists
 const logsDir = path.join(__dirname, "../../../logs");
