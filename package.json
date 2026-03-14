@@ -8,7 +8,6 @@
     "build": "tsc",
     "test": "jest",
     "test:watch": "jest --watch"
-    
   },
   "repository": {
     "type": "git",
