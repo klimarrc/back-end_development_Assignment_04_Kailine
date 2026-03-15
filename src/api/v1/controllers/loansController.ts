@@ -28,7 +28,7 @@ export const getAllLoanHandler = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        const loans = await loanService.getAllLoan();
+        const loans = await loanService.getAllLoans();
 
         res.status(HTTP_STATUS.OK).json(successResponse({ loans }, "Loan applications retrieved"));
     } catch (error: unknown) {
