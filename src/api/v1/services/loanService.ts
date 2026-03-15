@@ -39,51 +39,51 @@ export const createLoan = async (postdata:
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
 
-        throw new Error(`Failed to create post: ${errorMessage}`);
+        throw new Error(`Failed to create loan: ${errorMessage}`);
 
     }
 };
 
-//get all posts
+//get all loans
 
 export const getAllLoans = async (): Promise<Loan[]> => {
     try {
-        const posts = await firestoreRepository.getAllLoanDocuments<Loan>(COLLECTION);
+        const loans = await firestoreRepository.getAllLoanDocuments<Loan>(COLLECTION);
         return loans;
     } catch (error: unknown) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
 
-        throw new Error(`Failed to retrieve posts: ${errorMessage}`);
+        throw new Error(`Failed to retrieve loans: ${errorMessage}`);
     }
 };
 
-// get a single post by Id
+// get a single loan by Id
 export const getLoanById = async (id: string): Promise<Loan> => {
     try {
-        const post = await firestoreRepository.getLoanDocumentById<Loan>(COLLECTION, id);
+        const loan = await firestoreRepository.getLoanDocumentById<Loan>(COLLECTION, id);
 
-        if (!post) {
-            throw new Error(`Post with id ${id} not found`);
+        if (!loan) {
+            throw new Error(`Loan with id ${id} not found`);
         }
 
-        return post;
+        return loan;
 
     } catch (error: unknown) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
-        throw new Error(`Failed to retrieve post: ${errorMessage}`);
+        throw new Error(`Failed to retrieve loan: ${errorMessage}`);
     }
 };
 
-// update an existing post
+// update an existing loan
 export const updateLoan = async (id: string, postData:
     {
         applicant?: string;
         amount?: number;
         status?: PostStatus;
     }
-): Promise<Post> => {
+): Promise<Loan> => {
     try {
         const updatedLoanData: Partial<Loan> = {};
         if (postData.applicant !== undefined) {
@@ -99,27 +99,27 @@ export const updateLoan = async (id: string, postData:
             throw new Error("No valid fields provided for update");
         }
 
-        // update the post domcument
+        // update the loan document
         await firestoreRepository.updateLoanDocument<Loan>(COLLECTION, id, updatedLoanData);
-        const updatedPost = await firestoreRepository.getLoanDocumentById<Loan>(COLLECTION, id);
-        if (!updatedPost) {
-            throw new Error(`Post with id ${id} not found after update`);
+        const updatedLoan = await firestoreRepository.getLoanDocumentById<Loan>(COLLECTION, id);
+        if (!updatedLoan) {
+            throw new Error(`Loan with id ${id} not found after update`);
         }
-        return updatedPost;
+        return updatedLoan;
     } catch (error: unknown) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
-        throw new Error(`Failed to update post: ${errorMessage}`);
+        throw new Error(`Failed to update loan: ${errorMessage}`);
     }
 };
 
-// delete a post by Id
+// delete a loan by Id
 export const deleteLoan = async (id: string): Promise<void> => {
     try {
         await firestoreRepository.deleteLoanDocument(COLLECTION, id);
     } catch (error: unknown) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
-        throw new Error(`Failed to delete post: ${errorMessage}`);
+        throw new Error(`Failed to delete loan: ${errorMessage}`);
     }
 };
