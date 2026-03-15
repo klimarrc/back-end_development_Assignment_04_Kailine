@@ -20,7 +20,7 @@ export const runTransaction = async <T>(
 };
 
 // Create a new document in a specified Firestore collection with optional custom ID
-export const createDocument = async <T>(
+export const createLoanDocument = async <T>(
     collectionName: string,
     data: Partial<T>,
     id?: string
@@ -50,7 +50,7 @@ export const createDocument = async <T>(
  * @param {string} collectionName - The name of the collection.
  * @returns {Promise<FirebaseFirestore.QuerySnapshot>} - A QuerySnapshot containing all documents.
  */
-export const getDocuments = async (
+export const getAllLoanDocuments = async (
     collectionName: string
 ): Promise<FirebaseFirestore.QuerySnapshot> => {
     try {
@@ -70,7 +70,7 @@ export const getDocuments = async (
  * @param {string} id - The ID of the document to retrieve.
  * @returns {Promise<FirebaseFirestore.DocumentSnapshot | null>} - The document or null if it doesn't exist.
  */
-export const getDocumentById = async (
+export const getLoanDocumentById = async (
     collectionName: string,
     id: string
 ): Promise<FirebaseFirestore.DocumentSnapshot | null> => {
@@ -96,7 +96,7 @@ export const getDocumentById = async (
  * @param {Partial<T>} data - The updated document data.
  * @returns {Promise<void>}
  */
-export const updateDocument = async <T>(
+export const updateLoanDocument = async <T>(
     collectionName: string,
     id: string,
     data: Partial<T>
@@ -120,7 +120,7 @@ export const updateDocument = async <T>(
  * @param {FirebaseFirestore.Transaction} [transaction] - Optional Firestore transaction.
  * @returns {Promise<void>}
  */
-export const deleteDocument = async (
+export const deleteLoanDocument = async (
     collectionName: string,
     id: string,
     transaction?: FirebaseFirestore.Transaction

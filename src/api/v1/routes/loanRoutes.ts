@@ -1,7 +1,7 @@
 import express from "express";
 import {
     createPostHandler,
-} from "../controllers/postController";
+} from "../controllers/loansController";
 
 import authenticate from "../middleware/authenticate";
 //import isAuthorized from "../middleware/authorize";

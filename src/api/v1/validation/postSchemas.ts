@@ -9,6 +9,43 @@ export const postSchemas = {
             loanAmount: Joi.number().required(),
             status: Joi.string().valid("pending", "under_review", "flagged").required(),
         }),
-    }
-};
+    },
 
+    // GET /posts/:id - Get single post
+    getById: {
+        params: Joi.object({
+            id: Joi.string().required().messages({
+                "any.required": "Post ID is required",
+                "string.empty": "Post ID cannot be empty",
+            }),
+        }),
+        query: Joi.object({
+            include: Joi.string().valid("comments", "author").optional(),
+        }),
+    },
+
+    // PUT /posts/:id - Update post
+    update: {
+        params: Joi.object({
+            id: Joi.string().required().messages({
+                "any.required": "Post ID is required",
+                "string.empty": "Post ID cannot be empty",
+            }),
+        }),
+        body: Joi.object({
+            content: Joi.string().optional().messages({
+                "string.empty": "Content cannot be empty",
+            }),
+        }),
+    },
+
+    // DELETE /posts/:id - Delete post
+    delete: {
+        params: Joi.object({
+            id: Joi.string().required().messages({
+                "any.required": "Post ID is required",
+                "string.empty": "Post ID cannot be empty",
+            }),
+        }),
+    },
+};

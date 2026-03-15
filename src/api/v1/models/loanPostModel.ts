@@ -1,7 +1,7 @@
 export type PostStatus = "pending" | "under_review" | "flagged";
 
 
-export interface Post {
+export interface Loan {
     id: string;
     applicant: string;
     amount: number;

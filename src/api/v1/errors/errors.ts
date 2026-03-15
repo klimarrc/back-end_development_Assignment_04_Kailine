@@ -26,10 +26,10 @@ export class RepositoryError extends AppError {
     }
 }
 
-export class NotFoundError extends AppError {
+export class LoanError extends AppError {
     constructor(
-        message: string = "Resource not found",
-        code: string = "NOT_FOUND",
+        message: string = "Loan application not found",
+        code: string = "LOAN_NOT_FOUND",
         statusCode: number = HTTP_STATUS.NOT_FOUND
     ) {
         super(message, code, statusCode);

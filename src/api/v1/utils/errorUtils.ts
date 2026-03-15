@@ -1,4 +1,5 @@
 
+// getErrorMessage and getErrorMessage functions to extract message and code from errors, especially Firebase errors
 export const getErrorMessage = (error: unknown): string => {
     if (error instanceof Error) {
         return error.message;
@@ -6,7 +7,7 @@ export const getErrorMessage = (error: unknown): string => {
     return String(error);
 };
 
-
+// getErrorCode function to extract code from Firebase errors or return a default code
 export const getErrorCode = (error: unknown): string => {
     if (error instanceof Error) {
         // Firebase errors often have a 'code' property
