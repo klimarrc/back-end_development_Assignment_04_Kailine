@@ -17,6 +17,6 @@
         "baseUrl": "./",
         
     },
-    "include": ["src/**/*", "tests/**/*"], // Include all TypeScript files in the 'src' and 'tests' directories.
-    "exclude": ["node_modules", "dist"] // Exclude 'node_modules' and 'dist' directories.
+     "include": ["src/**/*", "tests/**/*", "test/errorHandler.test.ts", "test/postRoutes.integration.test.ts", "test/authorize.test.ts"], // Include all TypeScript files in the 'src' and 'tests' directories.
+     "exclude": ["node_modules", "dist"] // Exclude 'node_modules' and 'dist' directories.
 }

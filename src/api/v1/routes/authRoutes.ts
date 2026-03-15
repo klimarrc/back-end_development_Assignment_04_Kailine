@@ -1,5 +1,6 @@
 import express, { Router } from "express";
-import { signIn } from "../controllers/authController";
+import { signIn } from "../auth/signIn";
+
 
 //import authenticate from "../middleware/authenticate";
 //import isAuthorized from "../middleware/authorize";
@@ -11,6 +12,6 @@ router.post(
     "/signIn",
     //authenticate,
     // isAuthorized({ hasRole: ["admin"] }),
-    signIn
+    signIn,
 );
 export default router;
