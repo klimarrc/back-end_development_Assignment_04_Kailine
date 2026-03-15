@@ -8,10 +8,5 @@ import { signIn } from "../auth/signIn";
 const router: Router = express.Router();
 
 // Only admins can view detailed user information
-router.post(
-    "/signIn",
-    //authenticate,
-    // isAuthorized({ hasRole: ["admin"] }),
-    signIn,
-);
+router.post("/signIn", signIn);
 export default router;

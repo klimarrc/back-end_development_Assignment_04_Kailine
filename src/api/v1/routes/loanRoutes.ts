@@ -1,6 +1,6 @@
 import express from "express";
 import {
-    createPostHandler,
+    createLoanHandler,
 } from "../controllers/loansController";
 
 import authenticate from "../middleware/authenticate";
@@ -12,7 +12,7 @@ router.post(
     "/",
     authenticate,
     // isAuthorized({ hasRole: [] }),
-    createPostHandler
+    createLoanHandler
 );
 
 

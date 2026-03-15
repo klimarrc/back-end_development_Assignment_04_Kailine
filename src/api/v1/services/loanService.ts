@@ -1,10 +1,6 @@
-//import { db } from "../../../../config/firebaseConfig";
 import { Loan, PostStatus } from "../models/loanPostModel";
 import * as firestoreRepository from "../repositories/firestoreRepository";
 import * as counterRepository from "../repositories/counterRepository";
-
-
-const COLLECTION = "loans";
 
 //create a new loan 
 export const createLoan = async (postdata:
@@ -30,8 +26,7 @@ export const createLoan = async (postdata:
 
         }
 
-
-        await firestoreRepository.createLoanDocument(COLLECTION, newLoanData);
+        await firestoreRepository.createLoanDocument(newLoanData);
 
         return { ...newLoanData } as Loan;
 
@@ -48,7 +43,7 @@ export const createLoan = async (postdata:
 
 export const getAllLoans = async (): Promise<Loan[]> => {
     try {
-        const loans = await firestoreRepository.getAllLoanDocuments<Loan>(COLLECTION);
+        const loans = await firestoreRepository.getAllLoanDocuments();
         return loans;
     } catch (error: unknown) {
         const errorMessage =
@@ -61,7 +56,7 @@ export const getAllLoans = async (): Promise<Loan[]> => {
 // get a single loan by Id
 export const getLoanById = async (id: string): Promise<Loan> => {
     try {
-        const loan = await firestoreRepository.getLoanDocumentById<Loan>(COLLECTION, id);
+        const loan = await firestoreRepository.getLoanDocumentById(id);
 
         if (!loan) {
             throw new Error(`Loan with id ${id} not found`);
@@ -100,8 +95,8 @@ export const updateLoan = async (id: string, postData:
         }
 
         // update the loan document
-        await firestoreRepository.updateLoanDocument<Loan>(COLLECTION, id, updatedLoanData);
-        const updatedLoan = await firestoreRepository.getLoanDocumentById<Loan>(COLLECTION, id);
+        await firestoreRepository.updateLoanDocument(id, updatedLoanData);
+        const updatedLoan = await firestoreRepository.getLoanDocumentById(id);
         if (!updatedLoan) {
             throw new Error(`Loan with id ${id} not found after update`);
         }
@@ -116,7 +111,7 @@ export const updateLoan = async (id: string, postData:
 // delete a loan by Id
 export const deleteLoan = async (id: string): Promise<void> => {
     try {
-        await firestoreRepository.deleteLoanDocument(COLLECTION, id);
+        await firestoreRepository.deleteLoanDocument(id);
     } catch (error: unknown) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
