@@ -5,14 +5,14 @@ import {
 } from "../controllers/loansController";
 
 import authenticate from "../middleware/authenticate";
-//import isAuthorized from "../middleware/authorize";
+import isAuthorized from "../middleware/authorize";
 
 const router: express.Router = express.Router();
 
 router.post(
     "/",
     authenticate,
-    // isAuthorized({ hasRole: [] }),
+    isAuthorized({ hasRole: ["admin", "manager"] }),
     createLoanHandler
 );
 
