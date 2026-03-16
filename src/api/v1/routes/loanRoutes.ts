@@ -1,6 +1,7 @@
 import express from "express";
 import {
     createLoanHandler,
+    getAllLoanHandler,
 } from "../controllers/loansController";
 
 import authenticate from "../middleware/authenticate";
@@ -16,19 +17,19 @@ router.post(
 );
 
 
-// router.get("/loans", authenticate, getLoansHandler);
+router.get("/", authenticate, getAllLoanHandler);
 
-// router.get("/loans/:id", authenticate, getLoanByIdHandler);
+// router.get("/:id", authenticate, getLoanByIdHandler);
 
 // router.put(
-//     "/loans/:id",
+//     "/:id",
 //     authenticate,
 //     isAuthorized({ hasRole: ["admin", "manager"], allowSameUser: true }),
 //     updatePostHandler
 // );
 
 // router.delete(
-//     "/loans/:id",
+//     "/:id",
 //     authenticate,
 //     isAuthorized({ hasRole: ["admin", "manager"] }),
 //     deletePostHandler
