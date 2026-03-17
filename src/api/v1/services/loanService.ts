@@ -10,7 +10,6 @@ export const createLoan = async (postData: { applicant: string; amount: number; 
 
         const newLoanData = {
             ...postData,
-            status: postData.status || "pending" as PostStatus,
             createdAt: firestoreRepository.normalizeTimestamps(new Date()),
 
         }
