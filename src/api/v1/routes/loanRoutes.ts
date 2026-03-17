@@ -34,7 +34,7 @@ router.put(
 router.delete(
     "/:id",
     authenticate,
-    isAuthorized({ hasRole: ["admin", "manager"] }),
+    isAuthorized({ hasRole: ["admin"] }),
     validateRequest(postSchemas.delete),
     deleteLoanHandler
 );
