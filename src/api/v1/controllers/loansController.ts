@@ -10,8 +10,8 @@ export const createLoanHandler = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        const { applicant, amount, status } = req.body;
-        const loanData = { applicant, amount, status };
+        const { applicant, amount } = req.body;
+        const loanData = { applicant, amount };
 
         const newPost = await loanService.createLoan(loanData);
 

@@ -7,7 +7,6 @@ export const createLoan = async (postdata:
     {
         applicant: string;
         amount: number;
-        status: PostStatus;
     }): Promise<Loan> => {
 
     try {
@@ -23,6 +22,7 @@ export const createLoan = async (postdata:
             id,
             ...postdata,
             createdAt: new Date(),
+            status: "pending" as PostStatus,
 
         }
 

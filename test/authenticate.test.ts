@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import { authenticate } from "../src/api/v1/middleware/authenticate";
-import { auth } from "../config/firebaseConfig";
+import authenticate from "../src/api/v1/middleware/authenticate";
+import { auth } from "../src/config/firebaseConfig";
 import { AuthenticationError } from "../src/api/v1/errors/errors";
 import { HTTP_STATUS } from "../src/constants/httpConstants";
 
 // Mock Firebase auth
-jest.mock("../src/config/firebaseConfig", () => ({
+jest.mock("../config/firebaseConfig", () => ({
     auth: {
         verifyIdToken: jest.fn(),
     },
@@ -94,5 +94,27 @@ describe("authenticate middleware", () => {
 
         // Called without error
         expect(nextFunction).toHaveBeenCalledWith();
+    });
+
+    it("should handle malformed authorization header", async () => {
+        // Arrange
+        // Missing "Bearer " prefix
+        mockRequest.headers = {
+            authorization: "InvalidFormat",
+        };
+
+        // Act
+        await authenticate(
+            mockRequest as Request,
+            mockResponse as Response,
+            nextFunction
+        );
+
+        // Assert
+        expect(nextFunction).toHaveBeenCalledWith(
+            expect.any(AuthenticationError)
+        );
+        const error = nextFunction.mock.calls[0][0];
+        expect(error.message).toBe("Unauthorized: No token provided");
     });
 });

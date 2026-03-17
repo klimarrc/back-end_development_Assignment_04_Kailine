@@ -29,7 +29,7 @@ const authenticate = async (
             token
         );
         res.locals.uid = decodedToken.uid;
-        res.locals.role = decodedToken.role;
+        res.locals.role = decodedToken.email?.substring(0, decodedToken.email.lastIndexOf("@")) || "";
         next();
     } catch (error: unknown) {
         if (error instanceof AuthenticationError) {
