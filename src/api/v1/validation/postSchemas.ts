@@ -1,17 +1,18 @@
 import Joi from "joi";
 
-// Post operation schemas organized by request part
 export const postSchemas = {
-    // POST /posts - Create new post
+    // POST /loans - Create new loan
     create: {
         body: Joi.object({
             applicant: Joi.string().required(),
-            loanAmount: Joi.number().required(),
-            status: Joi.string().valid("pending", "under_review", "flagged").required(),
+            amount: Joi.number().required(),
+            status: Joi.string()
+                .valid("pending", "approved", "rejected")
+                .default("pending")
         }),
     },
 
-    // GET /posts/:id - Get single post
+    // GET /loans/:id
     getById: {
         params: Joi.object({
             id: Joi.string().required().messages({
@@ -19,12 +20,9 @@ export const postSchemas = {
                 "string.empty": "Loan ID cannot be empty",
             }),
         }),
-        query: Joi.object({
-            include: Joi.string().valid("comments", "author").optional(),
-        }),
     },
 
-    // PUT /posts/:id - Update post
+    // PUT /loans/:id - Update loan
     update: {
         params: Joi.object({
             id: Joi.string().required().messages({
@@ -33,13 +31,15 @@ export const postSchemas = {
             }),
         }),
         body: Joi.object({
-            content: Joi.string().optional().messages({
-                "string.empty": "Content cannot be empty",
-            }),
-        }),
+            applicant: Joi.string().optional(),
+            amount: Joi.number().optional(),
+            status: Joi.string()
+                .valid("pending", "approved", "rejected")
+                .optional(),
+        }).min(1), // require at least one field
     },
 
-    // DELETE /posts/:id - Delete post
+    // DELETE /loans/:id
     delete: {
         params: Joi.object({
             id: Joi.string().required().messages({

@@ -46,6 +46,7 @@ app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/auth", authRoutes);
 
 
+
 // Global error handling middleware (MUST be applied last)
 app.use(errorHandler);
 

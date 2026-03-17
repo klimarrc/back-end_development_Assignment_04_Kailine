@@ -1,5 +1,6 @@
 
 import { db } from "../../../config/firebaseConfig";
+import { Loan } from "../models/loanPostModel";
 import { FirestoreDataTypes } from "../types/firestore";
 import { Timestamp } from "firebase-admin/firestore";
 
@@ -10,9 +11,9 @@ interface FieldValuePair {
 
 
 // creating new document in firestore
-export const createLoanDocument = async <T>(
+export const createLoanDocument = async <Loan>(
     collectionName: string,
-    data: Partial<T>
+    data: Partial<Loan>
 ): Promise<string> => {
     try {
         let docRef: FirebaseFirestore.DocumentReference;
@@ -21,7 +22,8 @@ export const createLoanDocument = async <T>(
         docRef = await db.collection(collectionName).add(data);
 
 
-        return docRef.id;
+        return docRef.id.toString();
+
     } catch (error: unknown) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
@@ -33,7 +35,7 @@ export const createLoanDocument = async <T>(
 
 export const getAllLoanDocuments = async <T>(
     collectionName: string
-): Promise<T[]> => {
+): Promise<Loan[]> => {
     try {
         const snapshot = await db.collection(collectionName).get();
 

@@ -15,11 +15,12 @@ export const createLoanHandler = async (
 
         const newLoan = await loanService.createLoan(loanData);
 
-        res.status(HTTP_STATUS.CREATED).json(successResponse({ newLoan }, " Loan application created"));
+        res.status(HTTP_STATUS.CREATED).json(successResponse({ newLoan }, "Loan application created"));
     } catch (error: unknown) {
         next(error);
     }
 };
+
 
 // handles request to get all posts
 export const getAllLoanHandler = async (
@@ -30,11 +31,11 @@ export const getAllLoanHandler = async (
     try {
         const loans = await loanService.getAllLoans();
 
-        res.status(HTTP_STATUS.OK).json({
+        res.status(HTTP_STATUS.OK).json(successResponse({
             message: "Loan applications retrieved",
             count: loans.length,
             data: loans
-        });
+        }));
 
     } catch (error: unknown) {
         next(error);
@@ -67,11 +68,7 @@ export const updateLoanHandler = async (
         const { id } = req.params;
         const { applicant, amount, status } = req.body;
 
-        const updateLoanData: any = {};
-        if (applicant !== undefined) updateLoanData.applicant = applicant;
-        if (amount !== undefined) updateLoanData.amount = amount;
-        if (status !== undefined) updateLoanData.status = status;
-
+        const updateLoanData = { applicant, amount, status };
 
         const updatedLoan = await loanService.updateLoan(id as string, updateLoanData);
 
@@ -90,9 +87,9 @@ export const deleteLoanHandler = async (
 ): Promise<void> => {
     try {
         const { id } = req.params;
-        await loanService.deleteLoan(id as string);
+        const deletedLoan = await loanService.deleteLoan(id as string);
 
-        res.status(HTTP_STATUS.OK).json(successResponse({ id }, "Loan application deleted"));
+        res.status(HTTP_STATUS.OK).json(successResponse({ deletedLoan }, "Loan application deleted"));
     } catch (error: unknown) {
         next(error);
     }
