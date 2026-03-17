@@ -13,9 +13,9 @@ export const createLoanHandler = async (
         const { applicant, amount } = req.body;
         const loanData = { applicant, amount };
 
-        const newPost = await loanService.createLoan(loanData);
+        const newLoan = await loanService.createLoan(loanData);
 
-        res.status(HTTP_STATUS.CREATED).json(successResponse({ newPost }, " Loan application created"));
+        res.status(HTTP_STATUS.CREATED).json(successResponse({ newLoan }, " Loan application created"));
     } catch (error: unknown) {
         next(error);
     }
@@ -29,7 +29,13 @@ export const getAllLoanHandler = async (
 ): Promise<void> => {
     try {
         const loans = await loanService.getAllLoans();
-        res.status(HTTP_STATUS.OK).json(successResponse({ loans }, "Loan applications retrieved"));
+
+        res.status(HTTP_STATUS.OK).json({
+            message: "Loan applications retrieved",
+            count: loans.length,
+            data: loans
+        });
+
     } catch (error: unknown) {
         next(error);
     }
@@ -43,9 +49,9 @@ export const getLoanByIdHandler = async (
 ): Promise<void> => {
     try {
         const { id } = req.params;
-        const loans = await loanService.getLoanById(id as string);
+        const loan = await loanService.getLoanById(id as string);
 
-        res.status(HTTP_STATUS.OK).json(successResponse({ loans }, "Loan application retrieved "));
+        res.status(HTTP_STATUS.OK).json(successResponse({ loan }, "Loan application retrieved "));
     } catch (error: unknown) {
         next(error);
     }
@@ -61,7 +67,11 @@ export const updateLoanHandler = async (
         const { id } = req.params;
         const { applicant, amount, status } = req.body;
 
-        const updateLoanData = { applicant, amount, status };
+        const updateLoanData: any = {};
+        if (applicant !== undefined) updateLoanData.applicant = applicant;
+        if (amount !== undefined) updateLoanData.amount = amount;
+        if (status !== undefined) updateLoanData.status = status;
+
 
         const updatedLoan = await loanService.updateLoan(id as string, updateLoanData);
 
@@ -82,7 +92,7 @@ export const deleteLoanHandler = async (
         const { id } = req.params;
         await loanService.deleteLoan(id as string);
 
-        res.status(HTTP_STATUS.OK).json(successResponse("Loan application deleted"));
+        res.status(HTTP_STATUS.OK).json(successResponse({ id }, "Loan application deleted"));
     } catch (error: unknown) {
         next(error);
     }

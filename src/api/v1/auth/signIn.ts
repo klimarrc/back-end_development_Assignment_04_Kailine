@@ -1,25 +1,49 @@
 import { Request, Response, NextFunction } from "express";
-import { HTTP_STATUS } from "../../../constants/httpConstants";
-import { signInWithFirebaseEmailPassword } from "../services/firebaseAuthService";
+import { HTTP_STATUS } from "src/constants/httpConstants";
 
-export const signIn = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-): Promise<void> => {
-    const { email, password } = req.body;
-
+export const signIn = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const signInData = await signInWithFirebaseEmailPassword(email, password);
+        const { email, password } = req.body;
 
-        res.status(HTTP_STATUS.OK).json({
-            idToken: signInData.idToken,
-            email: signInData.email,
-            localId: signInData.localId,
-            expiresIn: Number(signInData.expiresIn),
-            refreshToken: signInData.refreshToken,
+        const apiKey = process.env.FIREBASE_API_KEY;
+
+        const response = await fetch(
+            `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`,
+            {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email,
+                    password,
+                    returnSecureToken: true
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            return res.status(HTTP_STATUS.BAD_REQUEST).json({
+                success: false,
+                message: "Authentication failed",
+                error: data
+            });
+        }
+
+        return res.status(HTTP_STATUS.OK).json({
+            idToken: data.idToken,
+            email: data.email,
+            localId: data.localId,
+            expiresIn: data.expiresIn,
+            refreshToken: data.refreshToken
         });
+
     } catch (error) {
-        next(error);
+        console.error(error);
+        return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: "Internal server error",
+            error: error instanceof Error ? error.message : "Unknown error"
+        });
     }
 };

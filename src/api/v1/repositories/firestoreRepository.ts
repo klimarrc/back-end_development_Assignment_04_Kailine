@@ -16,8 +16,10 @@ export const createLoanDocument = async <T>(
 ): Promise<string> => {
     try {
         let docRef: FirebaseFirestore.DocumentReference;
-
+        // Add server timestamp here
+        (data as any).createdAt = Timestamp.now();
         docRef = await db.collection(collectionName).add(data);
+
 
         return docRef.id;
     } catch (error: unknown) {
@@ -35,10 +37,18 @@ export const getAllLoanDocuments = async <T>(
     try {
         const snapshot = await db.collection(collectionName).get();
 
-        return snapshot.docs.map(doc => ({
-            id: doc.id,
-            ... (doc.data() as T),
-        }));
+        return snapshot.docs.map(doc => {
+            const data = doc.data() as any;
+
+            if (data.createdAt instanceof Timestamp) {
+                data.createdAt = data.createdAt.toDate().toISOString();
+            }
+
+            return {
+                id: doc.id,
+                ...data,
+            };
+        });
 
     } catch (error: unknown) {
         const errorMessage =
