@@ -1,7 +1,6 @@
 import morgan, { StreamOptions } from "morgan";
 import fs from "fs";
 import path from "path";
-import { HTTP_STATUS } from "../../../constants/httpConstants";
 
 // Ensure logs directory exists
 const logsDir = path.join(__dirname, "../../../logs");
@@ -26,7 +25,7 @@ const accessLogger = morgan("combined", { stream: accessLogStream });
 // Setup the logger for error logs (4xx and 5xx status codes only)
 const errorLogger = morgan("combined", {
     stream: errorLogStream,
-    skip: (req, res) => res.statusCode < HTTP_STATUS.BAD_REQUEST,
+    skip: (req, res) => res.statusCode < 400,
 });
 
 // Console logger for development
