@@ -21,8 +21,8 @@ export const createLoan = async (postdata:
 
             id,
             ...postdata,
-            createdAt: new Date(),
             status: "pending" as PostStatus,
+            createdAt: new Date(),
 
         }
 

@@ -35,7 +35,7 @@ export const getAllLoanHandler = async (
             count: loans.length,
             data: loans,
         });
-    } catch (error: unknown) {
+    } catch (error) {
         next(error);
     }
 };
