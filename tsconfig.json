@@ -15,10 +15,8 @@
         "noUnusedLocals": true,
         "alwaysStrict": true,
         "baseUrl": "./",
-        "paths": {
-            "*": ["*"]
-        }
+        
     },
-    "include": ["src/**/*", "test/**/*", "config/**/*"],
-    "exclude": ["node_modules", "dist"]
+     "include": ["src/**/*", "tests/**/*", "test/errorHandler.test.ts", "test/postRoutes.integration.test.ts", "test/authorize.test.ts"], // Include all TypeScript files in the 'src' and 'tests' directories.
+     "exclude": ["node_modules", "dist"] // Exclude 'node_modules' and 'dist' directories.
 }

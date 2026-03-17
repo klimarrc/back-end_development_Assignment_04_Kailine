@@ -1,0 +1,42 @@
+import express from "express";
+import { createLoanHandler, getAllLoanHandler, getLoanByIdHandler, updateLoanHandler, deleteLoanHandler } from "../controllers/loanController"
+import authenticate from "../middleware/authenticate";
+import isAuthorized from "../middleware/authorize";
+import { validateRequest } from "../middleware/validate";
+import { postSchemas } from "../validation/postSchemas";
+
+const router: express.Router = express.Router();
+
+router.post(
+    "/",
+    authenticate,
+    isAuthorized({ hasRole: ["admin", "manager"] }),
+    validateRequest(postSchemas.create),
+    createLoanHandler
+);
+
+
+router.get("/", authenticate, getAllLoanHandler);
+
+router.get("/:id",
+    authenticate,
+    validateRequest(postSchemas.getById),
+    getLoanByIdHandler);
+
+router.put(
+    "/:id",
+    authenticate,
+    isAuthorized({ hasRole: ["admin", "manager"], allowSameUser: true }),
+    validateRequest(postSchemas.update),
+    updateLoanHandler
+);
+
+router.delete(
+    "/:id",
+    authenticate,
+    isAuthorized({ hasRole: ["admin"] }),
+    validateRequest(postSchemas.delete),
+    deleteLoanHandler
+);
+
+export default router;

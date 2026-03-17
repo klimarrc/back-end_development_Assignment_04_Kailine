@@ -1,2 +1,12 @@
 node_modules/
 dist/
+
+# Logs
+logs/
+*.log
+
+# Firebase and GCP service account credentials
+*firebase-adminsdk*.json
+*fbsvc*.json
+src/logs/*.json
+
