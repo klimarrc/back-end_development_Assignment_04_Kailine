@@ -4,15 +4,19 @@ import * as firestoreRepository from "../repositories/firestoreRepository";
 
 const LOANS_COLLECTION = "loans";
 
+
 //create a new loan 
 export const createLoan = async (postData: { applicant: string; amount: number; status?: PostStatus; }): Promise<Loan> => {
     try {
+        const date = new Date(1773718289 * 1000);
+        console.log(date.toISOString());
 
-        const newLoanData = {
+
+        const newLoanData: Partial<Loan> = {
             ...postData,
-            createdAt: firestoreRepository.normalizeTimestamps(new Date()),
-
-        }
+            status: (postData.status || "PENDING") as PostStatus,
+            createdAt: date
+        };
 
         const id = await firestoreRepository.createLoanDocument<Loan>(LOANS_COLLECTION, newLoanData)
         return { id, ...newLoanData } as Loan;

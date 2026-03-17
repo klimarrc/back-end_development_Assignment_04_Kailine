@@ -8,25 +8,7 @@ interface FieldValuePair {
     fieldValue: FirestoreDataTypes;
 }
 
-export const tsToIso = (v: any) => {
-    if (v instanceof Timestamp) return v.toDate().toISOString();
 
-    // handles the JSON shape { _seconds, _nanoseconds }
-    if (v && typeof v === "object" && typeof v._seconds === "number") {
-        const ms = v._seconds * 1000 + Math.floor((v._nanoseconds ?? 0) / 1_000_000);
-        return new Date(ms).toISOString();
-    }
-
-    return v;
-};
-
-export const normalizeTimestamps = <T extends Record<string, any>>(obj: T): T => {
-    const copy: any = { ...obj };
-    for (const k of Object.keys(copy)) {
-        copy[k] = tsToIso(copy[k]);
-    }
-    return copy;
-};
 // creating new document in firestore
 export const createLoanDocument = async <T>(
     collectionName: string,
@@ -56,8 +38,7 @@ export const getAllLoanDocuments = async <T>(
         return snapshot.docs.map(doc => ({
             id: doc.id,
             ... (doc.data() as T),
-        }
-        ));
+        }));
 
     } catch (error: unknown) {
         const errorMessage =
