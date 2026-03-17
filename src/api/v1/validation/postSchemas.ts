@@ -15,8 +15,8 @@ export const postSchemas = {
     getById: {
         params: Joi.object({
             id: Joi.string().required().messages({
-                "any.required": "Post ID is required",
-                "string.empty": "Post ID cannot be empty",
+                "any.required": "Loan ID is required",
+                "string.empty": "Loan ID cannot be empty",
             }),
         }),
         query: Joi.object({
@@ -28,8 +28,8 @@ export const postSchemas = {
     update: {
         params: Joi.object({
             id: Joi.string().required().messages({
-                "any.required": "Post ID is required",
-                "string.empty": "Post ID cannot be empty",
+                "any.required": "Loan ID is required",
+                "string.empty": "Loan ID cannot be empty",
             }),
         }),
         body: Joi.object({
@@ -43,8 +43,8 @@ export const postSchemas = {
     delete: {
         params: Joi.object({
             id: Joi.string().required().messages({
-                "any.required": "Post ID is required",
-                "string.empty": "Post ID cannot be empty",
+                "any.required": "Loan ID is required",
+                "string.empty": "Loan ID cannot be empty",
             }),
         }),
     },

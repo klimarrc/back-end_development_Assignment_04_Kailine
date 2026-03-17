@@ -1,41 +1,27 @@
 import { Loan, PostStatus } from "../models/loanPostModel";
 import * as firestoreRepository from "../repositories/firestoreRepository";
-import * as counterRepository from "../repositories/counterRepository";
+
+const LOANS_COLLECTION = "loans";
 
 //create a new loan 
-export const createLoan = async (postdata:
-    {
-        applicant: string;
-        amount: number;
-    }): Promise<Loan> => {
-
+export const createLoan = async (postData: { applicant: string; amount: number; status?: PostStatus; }): Promise<Loan> => {
     try {
-        const id = await counterRepository.getNextLoanId();
-        const numericId = typeof id === "number" ? id : Number(id);
-
-        if (Number.isNaN(numericId)) {
-            throw new Error("Invalid loan id generated");
-        }
 
         const newLoanData = {
-
-            id,
-            ...postdata,
-            status: "pending" as PostStatus,
+            ...postData,
+            status: postData.status || "pending" as PostStatus,
             createdAt: new Date(),
 
         }
 
-        await firestoreRepository.createLoanDocument(newLoanData);
-
-        return { ...newLoanData } as Loan;
-
+        const id = await firestoreRepository.createLoanDocument<Loan>(LOANS_COLLECTION, newLoanData)
+        return { id, ...newLoanData } as Loan;
     } catch (error: unknown) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
-
-        throw new Error(`Failed to create loan: ${errorMessage}`);
-
+        throw new Error(
+            `Failed to create post: ${errorMessage}`
+        );
     }
 };
 
@@ -43,8 +29,8 @@ export const createLoan = async (postdata:
 
 export const getAllLoans = async (): Promise<Loan[]> => {
     try {
-        const loans = await firestoreRepository.getAllLoanDocuments();
-        return loans;
+        const loans = await firestoreRepository.getAllLoanDocuments(LOANS_COLLECTION);
+        return loans as Loan[];
     } catch (error: unknown) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
@@ -55,13 +41,13 @@ export const getAllLoans = async (): Promise<Loan[]> => {
 // get a single loan by Id
 export const getLoanById = async (id: string): Promise<Loan> => {
     try {
-        const loan = await firestoreRepository.getLoanDocumentById(id);
+        const loan = await firestoreRepository.getLoanDocumentById(LOANS_COLLECTION, id);
 
         if (!loan) {
             throw new Error(`Loan with id ${id} not found`);
         }
 
-        return loan;
+        return loan as Loan;
 
     } catch (error: unknown) {
         const errorMessage =
@@ -94,12 +80,12 @@ export const updateLoan = async (id: string, postData:
         }
 
         // update the loan document
-        await firestoreRepository.updateLoanDocument(id, updatedLoanData);
-        const updatedLoan = await firestoreRepository.getLoanDocumentById(id);
+        await firestoreRepository.updateLoanDocument(LOANS_COLLECTION, id, updatedLoanData);
+        const updatedLoan = await firestoreRepository.getLoanDocumentById(LOANS_COLLECTION, id);
         if (!updatedLoan) {
             throw new Error(`Loan with id ${id} not found after update`);
         }
-        return updatedLoan;
+        return updatedLoan as Loan;
     } catch (error: unknown) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
@@ -110,7 +96,7 @@ export const updateLoan = async (id: string, postData:
 // delete a loan by Id
 export const deleteLoan = async (id: string): Promise<void> => {
     try {
-        await firestoreRepository.deleteLoanDocument(id);
+        await firestoreRepository.deleteLoanDocument(LOANS_COLLECTION, id);
     } catch (error: unknown) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
