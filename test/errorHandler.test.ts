@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import errorHandler from "../src/api/v1/middleware/errorHandler";
 import {
     AppError,

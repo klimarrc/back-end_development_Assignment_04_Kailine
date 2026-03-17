@@ -1,11 +1,11 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import authenticate from "../src/api/v1/middleware/authenticate";
 import { auth } from "../src/config/firebaseConfig";
 import { AuthenticationError } from "../src/api/v1/errors/errors";
 import { HTTP_STATUS } from "../src/constants/httpConstants";
 
 // Mock Firebase auth
-jest.mock("../config/firebaseConfig", () => ({
+jest.mock("../src/config/firebaseConfig", () => ({
     auth: {
         verifyIdToken: jest.fn(),
     },
@@ -68,32 +68,35 @@ describe("authenticate middleware", () => {
     });
 
     it("should call next() and set user data when token is valid", async () => {
-        // Arrange
-        mockRequest.headers = {
-            authorization: "Bearer valid-token",
-        };
-
-        (auth.verifyIdToken as jest.Mock).mockResolvedValueOnce({
+        (auth.verifyIdToken as jest.Mock).mockResolvedValue({
             uid: "test-uid",
             role: "admin",
         });
 
-        // Act
+        mockRequest = {
+            headers: {
+                authorization: "Bearer valid-token",
+            },
+        };
+
+        mockResponse = {
+            locals: {},
+            status: jest.fn().mockReturnThis(),
+            json: jest.fn(),
+        };
+
         await authenticate(
             mockRequest as Request,
             mockResponse as Response,
             nextFunction
         );
 
-        // Assert
         expect(auth.verifyIdToken).toHaveBeenCalledWith("valid-token");
         expect(mockResponse.locals).toEqual({
             uid: "test-uid",
             role: "admin",
         });
-
-        // Called without error
-        expect(nextFunction).toHaveBeenCalledWith();
+        expect(nextFunction).toHaveBeenCalled();
     });
 
     it("should handle malformed authorization header", async () => {
