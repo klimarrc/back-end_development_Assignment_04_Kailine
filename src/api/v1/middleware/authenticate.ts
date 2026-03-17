@@ -4,6 +4,12 @@ import { AuthenticationError } from "../errors/errors";
 import { getErrorMessage, getErrorCode } from "../utils/errorUtils";
 import { auth } from "../../../config/firebaseConfig";
 
+/**
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @param {NextFunction} next - The next middleware function.
+ * @returns {Promise<void>}
+ */
 const authenticate = async (
     req: Request,
     res: Response,
@@ -11,11 +17,9 @@ const authenticate = async (
 ): Promise<void> => {
     try {
         const authHeader = req.headers.authorization;
-
-        const token =
-            authHeader && authHeader.startsWith("Bearer ")
-                ? authHeader.split(" ")[1]
-                : undefined;
+        const token: string | undefined = authHeader?.startsWith("Bearer ")
+            ? authHeader.split(" ")[1]
+            : undefined;
 
         if (!token) {
             throw new AuthenticationError(
@@ -24,35 +28,31 @@ const authenticate = async (
             );
         }
 
-        const decodedToken: DecodedIdToken & { role?: string } =
-            await auth.verifyIdToken(token);
-
+        const decodedToken: DecodedIdToken = await auth.verifyIdToken(
+            token
+        );
         res.locals.uid = decodedToken.uid;
-        res.locals.role = decodedToken.role || "";
-
+        res.locals.role = decodedToken.role;
         next();
     } catch (error: unknown) {
         if (error instanceof AuthenticationError) {
             next(error);
-            return;
-        }
-
-        if (error instanceof Error) {
+        } else if (error instanceof Error) {
             next(
                 new AuthenticationError(
                     `Unauthorized: ${getErrorMessage(error)}`,
                     getErrorCode(error)
                 )
             );
-            return;
-        }
+        } else {
+            next(
+                new AuthenticationError(
+                    "Unauthorized: Invalid token",
+                    "TOKEN_INVALID"
+                )
+            );
 
-        next(
-            new AuthenticationError(
-                "Unauthorized: Invalid token",
-                "TOKEN_INVALID"
-            )
-        );
+        }
     }
 };
 

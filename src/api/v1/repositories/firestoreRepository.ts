@@ -55,7 +55,15 @@ export const createLoanDocument = async (
 export const getAllLoanDocuments = async (): Promise<Loan[]> => {
     try {
         const snapshot = await db.collection(LOANS_COLLECTION).get();
-        return snapshot.docs.map((doc) => doc.data() as Loan);
+
+        return snapshot.docs.map((doc) => {
+            const data = doc.data();
+            return {
+                id: doc.id,
+                ...data,
+                createdAt: data.createdAt.toDate(),
+            } as Loan;
+        });
     } catch (error: unknown) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
@@ -78,7 +86,16 @@ export const getLoanDocumentById = async (
             .collection(LOANS_COLLECTION)
             .doc(id)
             .get();
-        return doc?.exists ? doc.data() as Loan : null;
+        if (doc?.exists) {
+            const data = doc.data();
+            return {
+                id: doc.id,
+                ...data,
+                createdAt: data?.createdAt.toDate(),
+            } as Loan;
+        } else {
+            return null;
+        }
     } catch (error: unknown) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
