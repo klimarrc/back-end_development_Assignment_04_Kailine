@@ -1,10 +1,7 @@
-// External library imports
 import { Request, Response, NextFunction } from "express";
 import { DecodedIdToken } from "firebase-admin/auth";
 import { AuthenticationError } from "../errors/errors";
 import { getErrorMessage, getErrorCode } from "../utils/errorUtils";
-
-// Internal module imports
 import { auth } from "../../../config/firebaseConfig";
 
 const authenticate = async (
@@ -14,9 +11,11 @@ const authenticate = async (
 ): Promise<void> => {
     try {
         const authHeader = req.headers.authorization;
-        const token: string | undefined = authHeader?.startsWith("Bearer ")
-            ? authHeader.split(" ")[1]
-            : undefined;
+
+        const token =
+            authHeader && authHeader.startsWith("Bearer ")
+                ? authHeader.split(" ")[1]
+                : undefined;
 
         if (!token) {
             throw new AuthenticationError(
@@ -25,31 +24,35 @@ const authenticate = async (
             );
         }
 
-        const decodedToken: DecodedIdToken = await auth.verifyIdToken(
-            token
-        );
+        const decodedToken: DecodedIdToken & { role?: string } =
+            await auth.verifyIdToken(token);
+
         res.locals.uid = decodedToken.uid;
-        res.locals.role = decodedToken.email?.substring(0, decodedToken.email.lastIndexOf("@")) || "";
+        res.locals.role = decodedToken.role || "";
+
         next();
     } catch (error: unknown) {
         if (error instanceof AuthenticationError) {
-            // Re-throw authentication errors to be handled by error middleware
             next(error);
-        } else if (error instanceof Error) {
+            return;
+        }
+
+        if (error instanceof Error) {
             next(
                 new AuthenticationError(
                     `Unauthorized: ${getErrorMessage(error)}`,
                     getErrorCode(error)
                 )
             );
-        } else {
-            next(
-                new AuthenticationError(
-                    "Unauthorized: Invalid token",
-                    "TOKEN_INVALID"
-                )
-            );
+            return;
         }
+
+        next(
+            new AuthenticationError(
+                "Unauthorized: Invalid token",
+                "TOKEN_INVALID"
+            )
+        );
     }
 };
 
