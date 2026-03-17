@@ -1,3 +1,4 @@
+
 import { Loan, PostStatus } from "../models/loanPostModel";
 import * as firestoreRepository from "../repositories/firestoreRepository";
 
@@ -10,7 +11,7 @@ export const createLoan = async (postData: { applicant: string; amount: number; 
         const newLoanData = {
             ...postData,
             status: postData.status || "pending" as PostStatus,
-            createdAt: new Date(),
+            createdAt: firestoreRepository.normalizeTimestamps(new Date()),
 
         }
 
