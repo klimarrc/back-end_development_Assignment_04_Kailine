@@ -72,14 +72,16 @@ export const getLoanDocumentById = async <T>(
         docRef = await db.collection(collectionName).doc(id);
 
         const snapshot = await docRef.get();
+        let data = snapshot.data() as any;
 
-        if (!snapshot) {
+        if (!snapshot || !data) {
             return null;
         }
 
+        data.createdAt = data.createdAt.toDate().toISOString();
         return {
             id: snapshot.id,
-            ... (snapshot.data() as T),
+            ...data,
         }
 
     } catch (error: unknown) {
