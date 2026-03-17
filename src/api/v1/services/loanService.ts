@@ -48,7 +48,6 @@ export const getAllLoans = async (): Promise<Loan[]> => {
     } catch (error: unknown) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
-
         throw new Error(`Failed to retrieve loans: ${errorMessage}`);
     }
 };
