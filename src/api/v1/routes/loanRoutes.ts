@@ -11,18 +11,23 @@ router.post(
     "/",
     authenticate,
     isAuthorized({ hasRole: ["admin", "manager"] }),
-    validateRequest(postSchemas.create), loanController.createLoanHandler)
+    validateRequest(postSchemas.create),
+    createLoanHandler
 );
 
 
 router.get("/", authenticate, getAllLoanHandler);
 
-router.get("/:id", authenticate, getLoanByIdHandler);
+router.get("/:id",
+    authenticate,
+    validateRequest(postSchemas.getById),
+    getLoanByIdHandler);
 
 router.put(
     "/:id",
     authenticate,
     isAuthorized({ hasRole: ["admin", "manager"], allowSameUser: true }),
+    validateRequest(postSchemas.update),
     updateLoanHandler
 );
 
@@ -30,6 +35,7 @@ router.delete(
     "/:id",
     authenticate,
     isAuthorized({ hasRole: ["admin"] }),
+    validateRequest(postSchemas.delete),
     deleteLoanHandler
 );
 
