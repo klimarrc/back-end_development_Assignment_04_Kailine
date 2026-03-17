@@ -4,7 +4,7 @@ import {
     AppError,
     AuthenticationError,
     AuthorizationError,
-    ServiceError,
+    LoanError,
 } from "../../src/api/v1/errors/errors";
 import { HTTP_STATUS } from "../../src/constants/httpConstants";
 
@@ -126,9 +126,9 @@ describe("errorHandler middleware", () => {
         });
     });
 
-    it("should handle ServiceError with custom status code", () => {
+    it("should handle LoanError with custom status code", () => {
         // Arrange
-        const error = new ServiceError(
+        const error = new LoanError(
             "Validation failed",
             "VALIDATION_ERROR",
             422
