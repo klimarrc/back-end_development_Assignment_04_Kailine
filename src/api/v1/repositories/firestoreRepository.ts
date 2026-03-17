@@ -10,18 +10,6 @@ interface FieldValuePair {
     fieldValue: FirestoreDataTypes;
 }
 
-export const runTransaction = async <T>(
-    operations: (transaction: FirebaseFirestore.Transaction) => Promise<T>
-): Promise<T> => {
-    try {
-        return await db.runTransaction(operations);
-    } catch (error: unknown) {
-        const errorMessage =
-            error instanceof Error ? error.message : "Unknown error";
-        throw new Error(`Transaction failed: ${errorMessage}`);
-    }
-};
-
 // Create a new document in a specified Firestore collection with optional custom ID
 export const createLoanDocument = async (
     data: Partial<Loan>,
@@ -135,17 +123,11 @@ export const updateLoanDocument = async <T>(
  */
 export const deleteLoanDocument = async (
     id: string,
-    transaction?: FirebaseFirestore.Transaction
 ): Promise<void> => {
     try {
         const docRef: FirebaseFirestore.DocumentReference = db
             .collection(LOANS_COLLECTION)
             .doc(id);
-        if (transaction) {
-            transaction.delete(docRef);
-        } else {
-            await docRef.delete();
-        }
     } catch (error: unknown) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
@@ -166,7 +148,7 @@ export const deleteLoanDocument = async (
 export const deleteDocumentsByFieldValues = async (
     collectionName: string,
     fieldValuePairs: FieldValuePair[],
-    transaction?: FirebaseFirestore.Transaction
+
 ): Promise<void> => {
     try {
         let query: FirebaseFirestore.Query = db.collection(collectionName);
@@ -175,22 +157,6 @@ export const deleteDocumentsByFieldValues = async (
         fieldValuePairs.forEach(({ fieldName, fieldValue }) => {
             query = query.where(fieldName, "==", fieldValue);
         });
-
-        let snapshot: FirebaseFirestore.QuerySnapshot;
-
-        if (transaction) {
-            snapshot = await transaction.get(query);
-            snapshot.docs.forEach((doc) => {
-                transaction.delete(doc.ref);
-            });
-        } else {
-            snapshot = await query.get();
-            const batch: FirebaseFirestore.WriteBatch = db.batch();
-            snapshot.docs.forEach((doc) => {
-                batch.delete(doc.ref);
-            });
-            await batch.commit();
-        }
     } catch (error: unknown) {
         const fieldValueString: string = fieldValuePairs
             .map(({ fieldName, fieldValue }) => `${fieldName} == ${fieldValue}`)

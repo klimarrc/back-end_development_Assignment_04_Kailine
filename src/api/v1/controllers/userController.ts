@@ -15,11 +15,11 @@ export const getUserDetails = async (
 ): Promise<void> => {
     const { uid } = req.params;
     try {
-        // Fetch user record from Firebase Authentication
+
         const user: UserRecord = await auth.getUser(uid as string);
         res.status(HTTP_STATUS.OK).json(successResponse(user));
     } catch (error) {
-        // Pass any errors to the centralized error handler
+
         next(error);
     }
 };
