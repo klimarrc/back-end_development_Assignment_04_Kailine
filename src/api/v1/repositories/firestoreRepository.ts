@@ -125,9 +125,7 @@ export const deleteLoanDocument = async (
     id: string,
 ): Promise<void> => {
     try {
-        const docRef: FirebaseFirestore.DocumentReference = db
-            .collection(LOANS_COLLECTION)
-            .doc(id);
+        await db.collection(LOANS_COLLECTION).doc(id).delete();
     } catch (error: unknown) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
@@ -142,7 +140,6 @@ export const deleteLoanDocument = async (
  * Can operate within a transaction if provided, otherwise performs a batch delete.
  * @param {string} collectionName - The name of the collection to delete from.
  * @param {FieldValuePair[]} fieldValuePairs - An array of field-value pairs to filter on.
- * @param {FirebaseFirestore.Transaction} [transaction] - Optional Firestore transaction object.
  * @returns {Promise<void>}
  */
 export const deleteDocumentsByFieldValues = async (
@@ -157,6 +154,7 @@ export const deleteDocumentsByFieldValues = async (
         fieldValuePairs.forEach(({ fieldName, fieldValue }) => {
             query = query.where(fieldName, "==", fieldValue);
         });
+
     } catch (error: unknown) {
         const fieldValueString: string = fieldValuePairs
             .map(({ fieldName, fieldValue }) => `${fieldName} == ${fieldValue}`)

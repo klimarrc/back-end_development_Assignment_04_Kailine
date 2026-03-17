@@ -1,7 +1,7 @@
 import express from "express";
 import { setCustomClaims } from "../controllers/adminController";
 import authenticate from "../middleware/authenticate";
-//import isAuthorized from "../middleware/authorize";
+import isAuthorized from "../middleware/authorize";
 
 
 
@@ -12,7 +12,7 @@ router.post(
     "/setCustomClaims",
 
     authenticate,
-    //isAuthorized({ hasRole: ["admin"] }),
+    isAuthorized({ hasRole: ["admin"] }),
     setCustomClaims
 );
 

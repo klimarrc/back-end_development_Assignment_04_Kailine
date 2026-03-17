@@ -1,14 +1,9 @@
 import express from "express";
-import {
-    createLoanHandler,
-    deleteLoanHandler,
-    getAllLoanHandler,
-    getLoanByIdHandler,
-    updateLoanHandler,
-} from "../controllers/loansController";
-
+import { createLoanHandler, getAllLoanHandler, getLoanByIdHandler, updateLoanHandler, deleteLoanHandler } from "../controllers/loanController"
 import authenticate from "../middleware/authenticate";
 import isAuthorized from "../middleware/authorize";
+import { validateRequest } from "../middleware/validate";
+import { postSchemas } from "../validation/postSchemas";
 
 const router: express.Router = express.Router();
 
@@ -16,7 +11,7 @@ router.post(
     "/",
     authenticate,
     isAuthorized({ hasRole: ["admin", "manager"] }),
-    createLoanHandler
+    validateRequest(postSchemas.create), loanController.createLoanHandler)
 );
 
 
